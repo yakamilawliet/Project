@@ -29,6 +29,7 @@ public class Result implements Serializable {
         return new Result(CODE_SUCCESS, "操作成功", data);
     }
 
+
     public static Result error(String code, String msg) {
         return new Result(code, msg, null);
     }

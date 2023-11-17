@@ -2,11 +2,9 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/carpro?serverTimezone=GMT%2b8
-    username: root
-    password: 2333
+  profiles:
+    active: dev
+
   # swagger
   mvc:
     pathmatch:
@@ -18,3 +16,27 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 微信小程序
+mini:
+  # 密钥
+  appid:
+  appsecret:
+
+# jwt配置
+jwt:
+  # 请求头
+  tokenHeader: Authorization
+  # 签名加盐
+  secret: appointment123
+  # jwt过期时间
+  expiration: 1800000
+  # token头部
+  tokenHead: 'Bearer '
+
+shiro:
+  # 认证不通过 跳转页面
+  loginUrl: /mini/login
+  # 授权不通过 跳转页面
+#  UnauthorizedUrl:
+  salt: appointment123

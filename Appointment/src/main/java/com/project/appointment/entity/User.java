@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.shiro.crypto.hash.Md5Hash;
 
 /**
 * <p>
@@ -38,7 +39,9 @@ private static final long serialVersionUID = 1L;
     @Alias("用户名")
     private String username;
 
-    // 密码
+    // 密码: 加盐后 3 次加密
+    // Md5Hash hash = new Md5Hash(password, salt, 3);
+    // salt -> shiro.salt
     @ApiModelProperty("密码")
     @Alias("密码")
     private String password;
@@ -57,4 +60,9 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty("手机号")
     @Alias("手机号")
     private String phoneNumber;
+
+    // openid
+    @ApiModelProperty("openid")
+    @Alias("openid")
+    private String openid;
 }

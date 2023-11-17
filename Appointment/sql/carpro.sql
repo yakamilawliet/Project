@@ -46,13 +46,14 @@ CREATE TABLE `user`  (
   `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '昵称',
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '角色',
   `phone_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '手机号',
+  `openid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '微信小程序openid，每个用户对应一个，且唯一',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'sherlcok', '233', 'red', 'USER', '');
-INSERT INTO `user` VALUES (2, 'holmes', '111', 'blue', 'USER', '');
+INSERT INTO `user` VALUES (1, 'sherlcok', '233', 'red', 'USER', '', '');
+INSERT INTO `user` VALUES (2, 'holmes', '111', 'blue', 'USER', '', '');
 
 SET FOREIGN_KEY_CHECKS = 1;
