@@ -6,13 +6,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class TokenUtils {
+public class JWTUtils {
 
     @Value("${jwt.secret}")
     private String secret;
@@ -27,7 +30,7 @@ public class TokenUtils {
      */
     public String generateToken(User user) {
         Map<String, Object> map = new HashMap<>(2);
-        map.put("username", user.getUsername());
+        map.put("openid", user.getOpenid());
         map.put("created", new Date());
         return this.generateJwt(map);
     }
@@ -62,15 +65,6 @@ public class TokenUtils {
     }
 
     /**
-     * 根据token得到用户名
-     * @param token
-     * @return
-     */
-    public String getUsernameByToken(String token) {
-        return (String) this.getTokenBody(token).get("username");
-    }
-
-    /**
      * 根据token判断当前时间内，该token是否过期
      * @param token
      * @return
@@ -88,5 +82,19 @@ public class TokenUtils {
         Claims claims = this.getTokenBody(token);
         claims.setExpiration(new Date());
         return this.generateJwt(claims);
+    }
+
+    /**
+     * 根据token获取openid
+     * @param jwtToken
+     * @return
+     */
+    public String getOpenidByToken(String jwtToken) {
+        try {
+            DecodedJWT jwt = JWT.decode(jwtToken);
+            return jwt.getClaim("openid").asString();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
     }
 }

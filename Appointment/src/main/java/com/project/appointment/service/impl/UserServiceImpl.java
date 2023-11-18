@@ -5,13 +5,13 @@ import com.project.appointment.entity.User;
 import com.project.appointment.mapper.UserMapper;
 import com.project.appointment.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.project.appointment.token.JWTToken;
 import com.project.appointment.utils.RedisUtils;
-import com.project.appointment.utils.TokenUtils;
+import com.project.appointment.utils.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.BearerToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Autowired
-    private TokenUtils tokenUtils;
+    private JWTUtils tokenUtils;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -59,18 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // user为空，后续返回只有openid
         }
 
-        // shiro认证
-        Subject subject = SecurityUtils.getSubject();
-        AuthenticationToken authenticationToken = new UsernamePasswordToken(user.getOpenid(), user.getPassword());
-        try {
-            subject.login(authenticationToken);
-        } catch (AuthenticationException e) {
-            // TODO 是否还需要进一步异常处理？
-            throw new AuthenticationException("认证失败");
-        }
-
-        log.info("根据登录信息获取token");
-        //需要借助jwt来生成token
+        // jwt来生成token
         String token = tokenUtils.generateToken(user);
         Map<String, Object> map = new HashMap<>(2);
         map.put("tokenHead", tokenHead);
@@ -78,6 +67,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         map.put("userInfo", user);
         map.put("openid", openid);
         map.put("sessionKey", sessionKey);
+
+        // shiro认证
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            subject.login(new JWTToken(token));
+        } catch (AuthenticationException e) {
+            // TODO 是否还需要进一步异常处理？
+            throw new AuthenticationException("认证失败");
+        }
+
         // 登录成功
         return Result.success(map);
     }

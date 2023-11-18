@@ -16,6 +16,7 @@ public class Result implements Serializable {
     private  static final long serialVersionUID = 42L;
     private static final String CODE_SUCCESS = "200";
     private static final String CODE_SYS_ERROR = "500";
+    public static final String CODE_TOKEN_ERROR = "601";
 
     private String code;
     private String msg;
