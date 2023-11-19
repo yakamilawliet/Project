@@ -27,7 +27,7 @@ import java.util.HashMap;
 @Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
-    @Value("jwt.tokenHeader")
+    @Value("${jwt.tokenHeader}")
     private String tokenHeader;
 
 
@@ -55,7 +55,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         //完成token登入
         //1.检查请求头中是否含有token
         HttpServletRequest httpServletRequest= (HttpServletRequest) request;
-        String token = httpServletRequest.getHeader(tokenHeader);
+        String token = httpServletRequest.getHeader("Authorization");
         //2. 如果客户端没有携带token，拦下请求
         if(null==token||"".equals(token)){
             responseTokenError(response,"Token无效，您无权访问该接口");

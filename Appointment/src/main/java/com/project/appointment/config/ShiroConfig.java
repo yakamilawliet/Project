@@ -53,7 +53,7 @@ public class ShiroConfig {
 
 
     // 配置过滤器
-    @Bean("shiroFilter")
+    @Bean("shiroFilterFactoryBean")
     public ShiroFilterFactoryBean factory(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 
@@ -72,6 +72,11 @@ public class ShiroConfig {
         filterRuleMap.put("/**", "jwt");
         // 登录页面不通过我们的Filter
         filterRuleMap.put("/mini/login", "anon");
+        // 放行Swagger相关访问
+        filterRuleMap.put("/swagger-ui/**", "anon");
+        filterRuleMap.put("/swagger-resources/**", "anon");
+        filterRuleMap.put("/v3/**", "anon");
+        filterRuleMap.put("/error/**", "anon");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }
