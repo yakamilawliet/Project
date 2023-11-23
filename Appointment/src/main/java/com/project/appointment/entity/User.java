@@ -57,4 +57,14 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty("手机号")
     @Alias("手机号")
     private String phoneNumber;
+
+    // 用户唯一标识
+    @ApiModelProperty("用户唯一标识")
+    @Alias("用户唯一标识")
+    private String uid;
+
+    // 微信唯一标识
+    @ApiModelProperty("微信唯一标识")
+    @Alias("微信唯一标识")
+    private String openid;
 }

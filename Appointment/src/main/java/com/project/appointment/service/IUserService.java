@@ -1,5 +1,7 @@
 package com.project.appointment.service;
 
+import com.project.appointment.controller.domain.LoginDTO;
+import com.project.appointment.controller.domain.UserRequest;
 import com.project.appointment.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-11-16
  */
 public interface IUserService extends IService<User> {
+    LoginDTO login(UserRequest user);
 
+    void register(UserRequest user);
 }
