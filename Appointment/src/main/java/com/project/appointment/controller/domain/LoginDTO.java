@@ -18,4 +18,6 @@ public class LoginDTO implements Serializable {
 
     private User user;
     private String token;
+    private String openid;
+    private String sessionkey;
 }

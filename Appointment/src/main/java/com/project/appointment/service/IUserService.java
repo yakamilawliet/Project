@@ -17,4 +17,10 @@ public interface IUserService extends IService<User> {
     LoginDTO login(UserRequest user);
 
     void register(UserRequest user);
+
+    LoginDTO checkAccount(String openid, String sessionkey);
+
+    User loadUserByOpenid(String openid);
+
+    User loadUserByUid(String uid);
 }

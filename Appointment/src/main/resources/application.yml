@@ -56,3 +56,9 @@ sa-token:
   token-prefix: Bearer
   # jwt秘钥
   jwt-secret-key: awjfawhfoijapnpiahfiawf
+
+# 微信小程序
+mini:
+  # 密钥
+  appid:
+  appsecret:
