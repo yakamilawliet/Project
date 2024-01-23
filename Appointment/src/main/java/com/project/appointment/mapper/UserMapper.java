@@ -24,4 +24,6 @@ public interface UserMapper extends BaseMapper<User> {
     User findByOpenid(@Param("openid") String openid);
 
     User findByUid(@Param("uid") String uid);
+
+    User findByPhoneNumber(@Param("phone_number") String phoneNumber);
 }

@@ -14,13 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-11-16
  */
 public interface IUserService extends IService<User> {
-    LoginDTO login(UserRequest user);
 
-    void register(UserRequest user);
+    LoginDTO loginByPhoneNumber(String phoneNumber, String Code);
 
-    LoginDTO checkAccount(String openid, String sessionkey);
 
-    User loadUserByOpenid(String openid);
-
-    User loadUserByUid(String uid);
+    User saveUser(String phoneNumber);
 }

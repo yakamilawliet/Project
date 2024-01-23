@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.project</groupId>
-    <artifactId>boot</artifactId>
+    <artifactId>Appointment</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>online-appointment</name>
     <description>online-appointment</description>
@@ -127,7 +127,17 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.78</version>
         </dependency>
-
+        <!-- 阿里云短信服务 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
 
 

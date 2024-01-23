@@ -35,6 +35,8 @@ spring:
         # 连接池中的最小空闲连接
         min-idle: 0
 
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
@@ -62,3 +64,10 @@ mini:
   # 密钥
   appid:
   appsecret:
+
+sms:
+  accessKeyId: LTAI5tJR59t5ATJnaBgVwpC4
+  secret: REawtnHySTdAJLJHxl3hzX7rDkMjhf
+  signName: 网约救护车验证
+  templateCode: SMS_464726425
+  regionId: cn-hangzhou
