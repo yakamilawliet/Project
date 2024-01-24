@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.project.appointment.common.Constants;
 import com.project.appointment.utils.RedisUtils;
 import com.project.appointment.controller.domain.LoginDTO;
-import com.project.appointment.controller.domain.UserRequest;
 import com.project.appointment.entity.User;
 import com.project.appointment.exception.ServiceException;
 import com.project.appointment.mapper.UserMapper;
@@ -37,8 +36,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    @Resource
-    private UserMapper userMapper;
 
     @Override
     public LoginDTO loginByPhoneNumber(String phoneNumber, String Code) {
@@ -50,7 +47,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new ServiceException("验证码错误");
         }
         User dbUser;
-        // !BCrypt.checkpw(user.getPassword(), dbUser.getPassword())
         try {
             dbUser = getOne(new UpdateWrapper<User>().eq("phone_number", phoneNumber));
         } catch (Exception e) {
@@ -98,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = new User();
         String name = Constants.USER_NAME_PREFIX + DateUtil.format(new Date(),
                     Constants.DATE_RULE_YYYYMMDD) + RandomUtil.randomString(4);
-        user.setUsername("User" + name);
+        user.setUsername(name);
         // 设置手机号
         user.setPhoneNumber(phoneNumber);   // 后期需要对手机号做加密
         // 设置 uid 唯一标识

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.project.appointment.common.Result;
 import com.project.appointment.controller.domain.LoginDTO;
 import com.project.appointment.controller.domain.ResCode;
-import com.project.appointment.controller.domain.UserRequest;
+import com.project.appointment.exception.ServiceException;
 import com.project.appointment.service.IUserService;
 import com.project.appointment.utils.*;
 import io.swagger.annotations.Api;
@@ -78,7 +78,7 @@ public class WebController {
     @ApiOperation(value = "验证码发送接口")
     public Result sendMsg(@RequestBody ResCode resCode) {
         if (RedisUtils.hasKey(resCode.getPhoneNumber())) {
-            throw new RuntimeException("不允许重复发送");
+            throw new ServiceException("不允许重复发送");
         }
         String code = Integer.toString(CodeUtils.generateValidateCode(4));
         log.info("发送的验证码:" + code);
@@ -90,7 +90,6 @@ public class WebController {
     @PostMapping("/Phone/login")
     @ApiOperation(value = "手机号登录接口")
     public Result phoneLogin(@RequestBody ResCode resCode){
-        String test = resCode.getUserCode();
         return Result.success(userService.loginByPhoneNumber(resCode.getPhoneNumber(), resCode.getUserCode()));
     }
 }
