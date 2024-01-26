@@ -7,6 +7,11 @@ spring:
     url: jdbc:mysql://localhost:3306/carpro?serverTimezone=GMT%2b8
     username: root
     password: 2333
+  # 文件上传下载大小限制
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
   # swagger
   mvc:
     pathmatch:
@@ -71,3 +76,10 @@ sms:
   signName: 网约救护车验证
   templateCode: SMS_464726425
   regionId: cn-hangzhou
+
+oss:
+  endpoint: oss-cn-chengdu.aliyuncs.com
+  accessKeyId: LTAI5tPixbKh6CNMnmS5dM7o
+  accessKeySecret: 7SDou8KxhnPjMo2kaePAuJ0qxPrrZH
+  bucketName: online-ambulance-booking-verification
+

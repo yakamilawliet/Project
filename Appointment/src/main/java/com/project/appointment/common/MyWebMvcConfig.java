@@ -19,6 +19,7 @@ public class MyWebMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/Phone/login","/code")
+                .excludePathPatterns("/file/avatar/upload", "/file/avatar/download/**", "/file/avatar/**/**") // 文件上传下载
                 .excludePathPatterns("/swagger**/**", "/webjars/**", "/v3/**", "/doc.html", "/favicon.ico"); // 排除swagger拦截
     }
     @Override
