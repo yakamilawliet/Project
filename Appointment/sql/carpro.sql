@@ -47,17 +47,19 @@ CREATE TABLE `user`  (
   `phone_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '手机号',
   `openid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '微信小程序openid，每个用户对应一个，且唯一',
   `uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户唯一标识',
+  `avatar_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户头像',
+  `avatar_update_time` datetime NULL DEFAULT NULL COMMENT '用户头像上一次更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'red', 'USER', '', '12345', NULL);
-INSERT INTO `user` VALUES (2, 'blue', 'USER', '', '11111', NULL);
-INSERT INTO `user` VALUES (3, 'User_20231123w4qq', 'USER', NULL, NULL, '3bc875f1cce14ccabd37b7ac83964f07');
-INSERT INTO `user` VALUES (4, 'User_20231123ijx5', 'USER', NULL, NULL, '2152592382174c82a489886a4886c976');
-INSERT INTO `user` VALUES (5, 'User_202311252nkj', 'USER', NULL, NULL, 'a346d285c5f14712ba04037ddeee1ff8');
-INSERT INTO `user` VALUES (10, 'UserUser_20240123p6n4', 'USER', '17373261205', NULL, '53ebccd35b51471fa4e516224564b6df');
+INSERT INTO `user` VALUES (1, 'red', 'USER', '', '12345', NULL, NULL, NULL);
+INSERT INTO `user` VALUES (2, 'blue', 'USER', '', '11111', NULL, NULL, NULL);
+INSERT INTO `user` VALUES (3, 'User_20231123w4qq', 'USER', NULL, NULL, '3bc875f1cce14ccabd37b7ac83964f07', NULL, NULL);
+INSERT INTO `user` VALUES (4, 'User_20231123ijx5', 'USER', NULL, NULL, '2152592382174c82a489886a4886c976', NULL, NULL);
+INSERT INTO `user` VALUES (5, 'User_202311252nkj', 'USER', NULL, NULL, 'a346d285c5f14712ba04037ddeee1ff8', NULL, NULL);
+INSERT INTO `user` VALUES (10, 'UserUser_20240123p6n4', 'USER', '17373261205', NULL, '53ebccd35b51471fa4e516224564b6df', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

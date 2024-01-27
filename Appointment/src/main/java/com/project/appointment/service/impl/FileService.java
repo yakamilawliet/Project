@@ -1,28 +1,40 @@
 package com.project.appointment.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.UUID;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.project.appointment.common.Result;
+import com.project.appointment.controller.domain.LoginDTO;
+import com.project.appointment.entity.User;
+import com.project.appointment.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
 public class FileService {
 
 
-    @Autowired
+    @Resource
     private OSSClient ossClient;
 
     @Value("${oss.bucketName}")
@@ -31,6 +43,13 @@ public class FileService {
     @Value("${oss.endpoint}")
     private String endpoint;
 
+    @Resource
+    private IUserService userService;
+
+    @Lazy
+    @Resource
+    private LoginDTO loginDTO;
+
     // 允许上传文件(图片)的格式
     private static final String[] IMAGE_TYPE = new String[]{
             ".bmp", ".jpg",
@@ -38,7 +57,7 @@ public class FileService {
 
     public static final String AVATAR_FILE_HOST = "avatar";
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadAvatar(MultipartFile file) {
         // 校验图片格式
         boolean isLegal = false;
         for (String type : IMAGE_TYPE) {
@@ -79,17 +98,28 @@ public class FileService {
         // 上传至阿里云OSS
         ossClient.putObject(bucketName, uploadAvatarUrl, inputStream, meta);
 
-        return "http://" + bucketName + "." + endpoint + "/" + uploadAvatarUrl;
+        String avatarUrl = "http://" + bucketName + "." + endpoint + "/" + uploadAvatarUrl;
+        String phoneNumber = String.valueOf(StpUtil.getLoginId());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getPhoneNumber, phoneNumber);
+        User user = userService.getOne(wrapper);
+        user.setAvatarUrl(avatarUrl);
+        user.setAvatarUpdateTime(LocalDateTime.now());
+        userService.saveOrUpdate(user);
+        return avatarUrl;
     }
 
 
-    public String download(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
+    public String downloadAvatar(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
         // 文件名以附件的形式下载
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 
         // 日期目录
-        // 注意，这里虽然写成这种固定获取日期目录的形式，逻辑上确实存在问题，但是实际上，filePath的日期目录应该是从数据库查询的
-        String filePath = new DateTime().toString("yyyy/MM/dd");
+        String phoneNumber = String.valueOf(StpUtil.getLoginId());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getPhoneNumber, phoneNumber);
+        User user = userService.getOne(wrapper);
+        String filePath = user.getAvatarUpdateTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String fileKey = AVATAR_FILE_HOST + "/" + filePath + "/" + fileName;
         // ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
         OSSObject ossObject = ossClient.getObject(bucketName, fileKey);
